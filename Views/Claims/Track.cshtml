@@ -1,0 +1,28 @@
+﻿@model CMCS.Web.Models.Claim
+@{
+    ViewData["Title"] = "Track Claim";
+    Layout = "_Layout";
+}
+<h1>Track Claim #@Model.Id</h1>
+<div id="trackStatus" class="progress">
+    <div id="bar" class="bar status-@Model.Status.ToString().ToLower()">@Model.Status</div>
+</div>
+<p class="muted">This page live-updates when a coordinator/manager approves or rejects your claim.</p>
+
+@section Scripts {
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/claimStatusHub").build();
+
+        connection.on("ClaimStatusChanged", function(claimId, newStatus){
+            const currentId = @Model.Id;
+            if(claimId === currentId){
+                const bar = document.getElementById("bar");
+                bar.innerText = newStatus;
+                bar.className = "bar status-" + newStatus.toLowerCase();
+            }
+        });
+
+        connection.start().catch(err => console.error(err));
+    </script>
+}

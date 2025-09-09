@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+@{
+    ViewData["Title"] = "Coordinator/Manager";
+    Layout = "_Layout";
+}
+<div class="page-head">
+    <h1>Pending Claims</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Lecturer</th>
+            <th>Created</th>
+            <th>Hours</th>
+            <th>Total</th>
+            <th>Docs</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>#@c.Id</td>
+                <td>@c.Lecturer.FullName</td>
+                <td>@c.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@c.HoursWorked</td>
+                <td><strong>R @c.TotalAmount</strong></td>
+                <td>@c.Documents.Count()</td>
+                <td>
+                    <form asp-action="Approve" method="post" class="inline">
+                        <input type="hidden" name="id" value="@c.Id" />
+                        <input type="text" name="comment" placeholder="Comment (optional)" />
+                        <button class="btn approve" type="submit">Approve</button>
+                    </form>
+                    <form asp-action="Reject" method="post" class="inline">
+                        <input type="hidden" name="id" value="@c.Id" />
+                        <input type="text" name="comment" placeholder="Reason" />
+                        <button class="btn reject" type="submit">Reject</button>
+                    </form>
+                    <a class="btn link" href="/Claims/Details/@c.Id">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

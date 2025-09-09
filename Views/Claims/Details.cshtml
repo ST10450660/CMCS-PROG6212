@@ -1,0 +1,50 @@
+﻿@model CMCS.Web.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+    Layout = "_Layout";
+}
+<div class="page-head">
+    <h1>Claim #@Model.Id</h1>
+    <span class="badge @Model.Status.ToString().ToLower()">@Model.Status</span>
+</div>
+
+<div class="card">
+    <div class="grid">
+        <div>
+            <div><strong>Lecturer:</strong> @Model.Lecturer.FullName</div>
+            <div><strong>Hours:</strong> @Model.HoursWorked</div>
+            <div><strong>Rate:</strong> R @Model.HourlyRate</div>
+            <div><strong>Total:</strong> <span class="total">R @Model.TotalAmount</span></div>
+            <div><strong>Notes:</strong> @Model.Notes</div>
+        </div>
+        <div>
+            <h3>Upload Supporting Document</h3>
+            <form method="post" enctype="multipart/form-data" asp-action="Upload" asp-route-id="@Model.Id">
+                <input type="file" name="file" />
+                <button class="btn pink" type="submit">Upload</button>
+            </form>
+
+            <h3>Documents</h3>
+            <ul class="docs">
+                @foreach (var d in Model.Documents)
+                {
+                    <li>
+                        <a href="/Documents/Download/@d.Id">@d.OriginalFileName</a> (@(Math.Round(d.SizeBytes / 1024.0, 1)) KB)
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h3>Status Timeline</h3>
+<div class="timeline">
+    @foreach (var h in Model.StatusHistory.OrderBy(x => x.ChangedAt))
+    {
+        <div class="tl-item">
+            <div class="tl-title">@h.ToStatus</div>
+            <div class="tl-meta">@h.ChangedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm") • @h.ActionedBy</div>
+            <div class="tl-note">@h.Comment</div>
+        </div>
+    }
+</div>

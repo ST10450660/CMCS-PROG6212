@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CMCS</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="background-color:#f8f9ff;">
+
+    <nav style="background: linear-gradient(to right, lightblue, pink); padding: 15px;">
+        <a href="/Claims" style="margin-right:15px; color:white; font-weight:bold;">Lecturer</a>
+        <a href="/Admin" style="margin-right:15px; color:white; font-weight:bold;">Coordinator/Manager</a>
+        <a href="/Documents/Upload" style="color:white; font-weight:bold;">Documents</a>
+    </nav>
+
+    <div class="container" style="padding: 20px;">
+        @RenderBody()
+    </div>
+
+    <footer style="background: lightblue; color: white; text-align: center; padding: 10px;">
+        <p>&copy; @DateTime.Now.Year - Claim Management System</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CMCS.Web.Models.Claim>
+@{
+    ViewData["Title"] = "My Claims";
+    Layout = "_Layout";
+}
+<div class="page-head">
+    <h1>My Claims</h1>
+    <a class="btn primary" href="/Claims/Create">+ New Claim</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Created</th>
+            <th>Hours</th>
+            <th>Rate</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>#@c.Id</td>
+                <td>@c.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@c.HoursWorked</td>
+                <td>@c.HourlyRate</td>
+                <td><strong>R @c.TotalAmount</strong></td>
+                <td><span class="badge @c.Status.ToString().ToLower()">@c.Status</span></td>
+                <td>
+                    <a class="btn link" href="/Claims/Details/@c.Id">Details</a>
+                    <a class="btn link" href="/Claims/Track/@c.Id">Track</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
